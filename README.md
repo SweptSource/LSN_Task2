@@ -1,4 +1,4 @@
-# LSN_Task1
+# LSN_Task2
 
 ##Założenia:
 - aplikacja będzie czytać dane z pliku;
