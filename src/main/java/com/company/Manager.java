@@ -14,26 +14,30 @@ public class Manager {
         try {
             Stream<String> stream = Files.lines(Paths.get(inputPath));
 
+            final Integer[] elements = new Integer[14];
+
             stream
-                    .map(s -> Arrays.asList(s.split("(?<!\\G\\w+)\\s")))
+                    .map(s -> Arrays.asList(s.split(" ")))
                     .flatMap(Collection::stream)
-                    .map(s -> {
-                        return new Pair<Integer, Integer>(Integer.parseInt(s.split(" ")[0]), Integer.parseInt(s.split(" ")[1]));
-                    })
-                    .filter(pair -> pair.getKey() + pair.getValue() == 13)
-                    .map(pair -> {
-                        if (pair.getKey() > pair.getValue()) {
-                            return pair = new Pair<Integer, Integer>(pair.getValue(), pair.getKey());
-                        } else return pair;
-                    })
-                    .sorted((p1, p2) -> p1.getKey().compareTo(p2.getKey()))
-                    .forEach(pair -> System.out.println(pair.getKey() + " " + pair.getValue()));
+                    .map(Integer::valueOf)
+                    .filter(i -> i <= 13)
+                    .sorted(Comparator.reverseOrder())
+                    .peek(i -> elements[i] = i)
+                    .sorted()
+                    .forEach(
+                            i -> {
+                                if (elements[13 - i] != null) {
+                                    System.out.println(i + " " + elements[13 - i]);
+                                    elements[i] = null;
+                                }
+                            }
+                    );
 
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
 
-            } catch (Exception e) {
-                e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
